@@ -1,0 +1,13 @@
+.hexCell {
+  text-transform: uppercase;
+  padding: 0 0.2rem;
+  font-family: monospace;
+}
+
+/*.hexCell.splitOn8:nth-of-type(8n) {*/
+/*  padding-right: 0.4rem;*/
+/*}*/
+
+/*.hexCell.splitOn8:nth-of-type(8n + 1) {*/
+/*  padding-left: 0.4rem;*/
+/*}*/
