@@ -44,10 +44,12 @@ export default function Home() {
       <Alert.Root status="warning">
         <Alert.Indicator />
         <Alert.Content>
-                {/* 在按钮上方插入图片 */}
-          <img src="/logo.jpg" alt="示例图片" style={{ maxWidth: '10%', marginBottom: 8 }} />
+          <img src="/logo.jpg" alt="logo" style={{ maxWidth: '10%', marginBottom: 8 }} />
           <Alert.Description>
             <Stack>
+              <p>
+                <a href="https://epdfontweb.streamlit.app/" target="_blank" style={{ color: '#ff8c00', fontWeight: 'bold' }}>字体网站快速入口</a>
+              </p>
               <p>
                 免责声明：已尽量避免误操作导致不可恢复的问题，但风险永远不为零。请务必小心操作，并在刷写前通过 <b>保存完整闪存</b> 进行备份。
               </p>
@@ -158,6 +160,9 @@ export default function Home() {
               使用 <b>快速刷寫英文/中文固件</b> 會自動下載固件，覆蓋備份分區並切換至新固件（原固件會作為新備份保留）。<br />
               該方式比完整刷寫快很多，且會保留所有設置。如遇異常可重複操作。
             </p>
+            <p>
+                <a href="https://epdfontweb.streamlit.app/" target="_blank" style={{ color: '#000000', fontWeight: 'bold' }}>字体网站快速入口</a>
+           </p>
           </Stack>
         </div>
         <Stack as="section">
