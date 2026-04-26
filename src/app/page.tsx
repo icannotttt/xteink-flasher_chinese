@@ -44,7 +44,8 @@ export default function Home() {
       <Alert.Root status="warning">
         <Alert.Indicator />
         <Alert.Content>
-          <Alert.Title>提示</Alert.Title>
+                {/* 在按钮上方插入图片 */}
+          <img src="/logo.jpg" alt="示例图片" style={{ maxWidth: '10%', marginBottom: 8 }} />
           <Alert.Description>
             <Stack>
               <p>
@@ -89,7 +90,9 @@ export default function Home() {
           >
             1 保存完整闪存／保存完整閃存
           </Button>
-          <Stack direction="row">
+
+          {/* 第一行：文件上传 + 写入按钮 */}
+          <Stack direction="row" gap={2}>
             <Flex grow={1}>
               <FileUpload ref={fullFlashFileInput} />
             </Flex>
@@ -105,10 +108,41 @@ export default function Home() {
             >
               从文件写入全闪存／從文件寫入全閃存
             </Button>
+
           </Stack>
+           <Stack gap={1} color="grey" textStyle="sm">
+            <p>
+              由于每个开发者定义的分区表不同，所以如果是<b>从非官方系统</b>那里来的伙伴
+            </p>
+            <p>
+              可能需要多一个步骤：刷入之前保存的<b>官方全闪存</b>或者是刷一下下面的<b>双语全闪存</b>
+            </p>
+            <p>
+             如果想体验一下英文原版排版的也可以刷一下，但并不是说我就放弃了英文排版
+            </p>
+            <p>
+             双系统同时按下电源键和侧边上键可以切换系统（本系统和英文原版crosspoint系统）
+            </p>
+          </Stack>         
+          {/* 第二行：单独的双语全闪存按钮 */}
+          <Button
+            // variant="subtle"
+            w="100%" 
+            onClick={async () => {
+              const res = await fetch('/flash.bin');
+              const blob = await res.blob();
+              const file = new File([blob], 'flash.bin');
+              actions.writeFullFlash(() => file);
+            }}
+            disabled={isRunning}
+          >
+            1.5 双语全闪存（觉得英文优化得不好的可以刷一下这个）
+          </Button>
+
         </Stack>
       </Stack>
       <Separator />
+
       <Stack gap={3} as="section">
         <div>
           <Heading size="xl">2.保存完全闪存后来这里／保存完全閃存後來這裡</Heading>
@@ -128,13 +162,14 @@ export default function Home() {
         </div>
         <Stack as="section">
           
+
           <Button
             // variant="subtle"
             onClick={actions.flashCrossPointFirmware}
             disabled={isRunning || !communityFirmwareVersions}
             loading={!communityFirmwareVersions}
           >
-            刷入 allocate中文 CrossPoint 固件 (
+            2. 刷入 allocate中文 CrossPoint 固件 (
             {communityFirmwareVersions?.crossPoint.version}) -{' '}
             {communityFirmwareVersions?.crossPoint.releaseDate}
           </Button>
