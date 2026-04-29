@@ -163,6 +163,13 @@ export default function Home() {
             <p>
                 <a href="https://epdfontweb.streamlit.app/" target="_blank" style={{ color: '#000000', fontWeight: 'bold' }}>字体网站快速入口</a>
            </p>
+            <p>
+              可能涉嫌法律风险，暂时关闭刷回官方固件入口<br />
+              如想刷回官方，可以点击<br />
+              <a href="https://xteink.dve.al//" target="_blank" style={{ color: '#000000', fontWeight: 'bold' }}>刷回官方中文固件</a>
+              选择OTA fast flash controls框下面的Flash Chinese firmware
+                
+           </p>
           </Stack>
         </div>
         <Stack as="section">
@@ -186,14 +193,14 @@ export default function Home() {
           >
             刷入官方海外固件 ({officialFirmwareVersions?.en ?? '...'})
           </Button> */}
-          <Button
+          {/* <Button
             variant="subtle"
             onClick={actions.flashChineseFirmware}
             disabled={isRunning || !officialFirmwareVersions}
             loading={!officialFirmwareVersions}
           >
             刷入官方中文固件 ({officialFirmwareVersions?.ch ?? '...'})
-          </Button>
+          </Button> */}
           {/* <Button
             variant="subtle"
             onClick={actions.flashCrossPointFirmware}
