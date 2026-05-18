@@ -160,14 +160,17 @@ export default function Home() {
             // variant="subtle"
             w="100%" 
             onClick={async () => {
-              const res = await fetch('/flash.bin');
+              const flashFileName = deviceModel === 'x3' ? '/flash_all.bin' : '/flash.bin';
+              const res = await fetch(flashFileName);
               const blob = await res.blob();
-              const file = new File([blob], 'flash.bin');
+              const file = new File([blob], flashFileName.slice(1));
               actions.writeFullFlash(() => file);
             }}
             disabled={isRunning}
           >
-            1.5 双语全闪存（觉得英文优化得不好的可以刷一下这个）
+            {deviceModel === 'x3'
+              ? '1.5 x3全闪存'
+              : '1.5 双语全闪存（觉得英文优化得不好的可以刷一下这个）'}
           </Button>
 
         </Stack>
