@@ -258,6 +258,58 @@ export function useEspOperations() {
     await runStep(resetStepName, () => espController.disconnect());
   };
 
+  const flashBootFilesFromPublic = async () => {
+    const readPublicBinary = async (path: string) => {
+      const response = await fetch(path);
+      if (!response.ok) {
+        throw new Error(`Failed to load ${path}`);
+      }
+
+      return new Uint8Array(await response.arrayBuffer());
+    };
+
+    initializeSteps([
+      'Load boot files',
+      'Connect to device',
+      'Flash boot files',
+      resetStepName,
+    ]);
+
+    const [bootloader, partitions, bootApp0] = await runStep(
+      'Load boot files',
+      async () =>
+        Promise.all([
+          readPublicBinary('/bootloader.bin'),
+          readPublicBinary('/partitions.bin'),
+          readPublicBinary('/boot_app0.bin'),
+        ]),
+    );
+
+    const espController = await runStep('Connect to device', async () => {
+      const c = await EspController.fromRequestedDevice(
+        deviceModel === 'x3' ? X3_PARTITION_LAYOUT : X4_PARTITION_LAYOUT,
+      );
+      await c.connect();
+      return c;
+    });
+
+    await runStep('Flash boot files', () =>
+      espController.writeFlashFiles(
+        [
+          { address: 0x0000, data: bootloader },
+          { address: 0x8000, data: partitions },
+          { address: 0xe000, data: bootApp0 },
+        ],
+        (_, p, t) =>
+          updateStepData('Flash boot files', {
+            progress: { current: p, total: t },
+          }),
+      ),
+    );
+
+    await runStep(resetStepName, () => espController.disconnect());
+  };
+
   const saveFullFlash = async () => {
     initializeSteps([
       'Connect to device',
@@ -603,6 +655,7 @@ export function useEspOperations() {
       flashChineseFirmware: wrapWithRunning(flashChineseFirmware),
       flashCrossPointFirmware: wrapWithRunning(flashCrossPointFirmware),
       flashCustomFirmware: wrapWithRunning(flashCustomFirmware),
+      flashBootFilesFromPublic: wrapWithRunning(flashBootFilesFromPublic),
       saveFullFlash: wrapWithRunning(saveFullFlash),
       writeFullFlash: wrapWithRunning(writeFullFlash),
       fakeWriteFullFlash: wrapWithRunning(fakeWriteFullFlash),

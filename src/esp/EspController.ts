@@ -202,6 +202,28 @@ export default class EspController {
     await this.writeData(partition.data, 0xe000, reportProgress);
   }
 
+  async writeFlashFiles(
+    files: { address: number; data: Uint8Array }[],
+    reportProgress?: (
+      fileIndex: number,
+      written: number,
+      total: number,
+    ) => void,
+  ) {
+    await this.espLoader.writeFlash({
+      fileArray: files.map(({ address, data }) => ({
+        data: this.espLoader.ui8ToBstr(data),
+        address,
+      })),
+      flashSize: 'keep',
+      flashMode: 'keep',
+      flashFreq: 'keep',
+      eraseAll: false,
+      compress: true,
+      reportProgress,
+    });
+  }
+
   async readAppPartition(
     partitionLabel: 'app0' | 'app1',
     onPacketReceived?: (
@@ -292,20 +314,6 @@ export default class EspController {
       total: number,
     ) => void,
   ) {
-    await this.espLoader.writeFlash({
-      fileArray: [
-        {
-          data: this.espLoader.ui8ToBstr(data),
-          address,
-        },
-      ],
-      flashSize: 'keep',
-      flashMode: 'keep',
-      flashFreq: 'keep',
-
-      eraseAll: false,
-      compress: true,
-      reportProgress,
-    });
+    await this.writeFlashFiles([{ address, data }], reportProgress);
   }
 }

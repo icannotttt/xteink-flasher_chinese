@@ -155,22 +155,13 @@ export default function Home() {
              双系统同时按下电源键和侧边上键可以切换系统（本系统和英文原版crosspoint系统）
             </p>
           </Stack>         
-          {/* 第二行：单独的双语全闪存按钮 */}
+          {/* 第二行：单独的双语全闪存按钮（已与匹配分区表位置互换） */}
           <Button
-            // variant="subtle"
-            w="100%" 
-            onClick={async () => {
-              const flashFileName = deviceModel === 'x3' ? '/flash_all.bin' : '/flash.bin';
-              const res = await fetch(flashFileName);
-              const blob = await res.blob();
-              const file = new File([blob], flashFileName.slice(1));
-              actions.writeFullFlash(() => file);
-            }}
+            colorScheme="orange"
+            onClick={actions.flashBootFilesFromPublic}
             disabled={isRunning}
           >
-            {deviceModel === 'x3'
-              ? '1.5 x3全闪存'
-              : '1.5 双语全闪存（觉得英文优化得不好的可以刷一下这个）'}
+            1.5 快速匹配分区表，主要用于不同固件快速切换
           </Button>
 
         </Stack>
@@ -194,13 +185,13 @@ export default function Home() {
             <p>
                 <a href="https://epdfontweb.streamlit.app/" target="_blank" style={{ color: '#000000', fontWeight: 'bold' }}>字体网站快速入口</a>
            </p>
-            <p>
+            {/* <p>
               可能涉嫌法律风险，暂时关闭刷回官方固件入口<br />
               如想刷回官方，可以点击<br />
               <a href="https://xteink.dve.al//" target="_blank" style={{ color: '#000000', fontWeight: 'bold' }}>刷回官方中文固件</a>
               选择OTA fast flash controls框下面的Flash Chinese firmware
                 
-           </p>
+           </p> */}
           </Stack>
         </div>
         <Stack as="section">
@@ -212,16 +203,16 @@ export default function Home() {
           >
             Flash English firmware for {deviceModel.toUpperCase()} (
             {officialFirmwareVersions?.en ?? '...'})
-          </Button>
+          </Button>*/}
           <Button
             variant="subtle"
             onClick={actions.flashChineseFirmware}
             disabled={isRunning || !officialFirmwareVersions}
             loading={!officialFirmwareVersions}
           >
-            Flash Chinese firmware for {deviceModel.toUpperCase()} (
+            {deviceModel.toUpperCase()} 设备刷回官方 (
             {officialFirmwareVersions?.ch ?? '...'})
-          </Button> */}
+          </Button> 
           <Button
             // variant="subtle"
             onClick={actions.flashCrossPointFirmware}
@@ -249,6 +240,22 @@ export default function Home() {
                {deviceModel.toUpperCase()}刷入自定义固件
             </Button>
           </Stack>
+          <Button
+            // variant="subtle"
+            w="100%" 
+            onClick={async () => {
+              const flashFileName = deviceModel === 'x3' ? '/flash_all.bin' : '/flash.bin';
+              const res = await fetch(flashFileName);
+              const blob = await res.blob();
+              const file = new File([blob], flashFileName.slice(1));
+              actions.writeFullFlash(() => file);
+            }}
+            disabled={isRunning}
+          >
+            {deviceModel === 'x3'
+              ? 'x3全闪存'
+              : '双语全闪存（觉得英文优化得不好的可以刷一下这个）'}
+          </Button>
           {process.env.NODE_ENV === 'development' && (
             <Button
               variant="subtle"
