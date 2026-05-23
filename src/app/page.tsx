@@ -146,16 +146,9 @@ export default function Home() {
               由于每个开发者定义的分区表不同，所以如果是<b>从非官方系统</b>那里来的伙伴
             </p>
             <p>
-              可能需要多一个步骤：刷入之前保存的<b>官方全闪存</b>或者是刷一下下面的<b>双语全闪存</b>
-            </p>
-            <p>
-             如果想体验一下英文原版排版的也可以刷一下，但并不是说我就放弃了英文排版
-            </p>
-            <p>
-             双系统同时按下电源键和侧边上键可以切换系统（本系统和英文原版crosspoint系统）
+              可能需要多一个步骤：点击刷入快速匹配按钮
             </p>
           </Stack>         
-          {/* 第二行：单独的双语全闪存按钮（已与匹配分区表位置互换） */}
           <Button
             colorScheme="orange"
             onClick={actions.flashBootFilesFromPublic}
